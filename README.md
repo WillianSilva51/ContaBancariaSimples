@@ -1,6 +1,10 @@
 # Conta Bancária Simples
 
-A idea desta atividade é que você seja capaz de implementar as funcionalidades
+![GitHub repo size](https://img.shields.io/github/repo-size/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+
+> A ideia desta atividade é que você seja capaz de implementar as funcionalidades
 básicas de uma conta bancária.
 
 <figure>
