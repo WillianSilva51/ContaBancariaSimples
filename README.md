@@ -1,18 +1,21 @@
 # Conta Bancária Simples
 
-A idea desta atividade é que você seja capaz de implementar as funcionalidades
-básicas de uma conta bancária.
+![GitHub repo size](https://img.shields.io/github/repo-size/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/WillianSilva51/ContaBancariaSimples?style=for-the-badge)
+
+> A ideia desta atividade é que você seja capaz de implementar as funcionalidades
+> básicas de uma conta bancária.
 
 <figure>
   <img src="contabancaria.jpg" alt="ilustração de operações típicas de contas bancárias">
   <figcaption style="text-align: center"><a href="https://www.freevector.com/free-iconic-atm-vectors-25886">Image obtida em freevector.com</a></figcaption>
 </figure>
 
-
+## Índice
 - [Requisitos](#requisitos)
 - [Diagrama](#diagrama)
 - [Exemplo de execução](#exemplo-de-execução)
-- [Relatório de Entrega](#relatório-de-entrega)
 
 
 ## Requisitos
@@ -44,7 +47,7 @@ classDiagram
         - int numero
         - double saldo
         - double limite
-        - double[] extrato
+        - List<Double> extrato
         - int operacoesRealizadas
 
         + Conta(int numero, double saldoInicial)
@@ -57,7 +60,7 @@ classDiagram
     }
 ```
 
-## Exemplo de execução 
+## Exemplo de execução
 
 ```java
 public class Runner {
@@ -93,8 +96,8 @@ public class Runner {
         System.out.println(minhaConta); //Conta{numero=1001, saldo=0.0, limite=100.0}
 
         double[] extrato = minhaConta.verExtrato();
-        for(int i = 0; i < extrato.length; i++) {
-            System.out.println(extrato[i]); // -200.0 500.0 -400.0 -1950.0 50.0
+        for (double v : extrato) {
+            System.out.println(v); // -200.0 500.0 -400.0 -1950.0 50.0
         }
     }
 }

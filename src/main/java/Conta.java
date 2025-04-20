@@ -3,18 +3,21 @@
  *
  */
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Conta {
     private final int numero;
     private double saldo;
     private double limit;
-    private final double[] extrato;
-    private int operacoes;
+    private final List<Double> extrato;
+    private int operates;
 
     public Conta(int numero, double saldo) {
         this.numero = numero;
         this.saldo = saldo;
-        operacoes = 0;
-        extrato = new double[10];
+        operates = 0;
+        extrato = new ArrayList<>(10);
         limit = 100;
     }
 
@@ -31,61 +34,63 @@ public class Conta {
     }
 
     public boolean sacar(double valor) {
-        if (valor < 0 || valor > getSaldo())
-            return false;
+        if (valor > 0 && valor <= getSaldo()) {
 
+            reajusteSaldo(valor);
+
+            extrato.add(operates++, -valor);
+
+            return true;
+        }
+        return false;
+    }
+
+    private void reajusteSaldo(double valor) {
         if (valor > saldo) {
             limit -= (valor - saldo);
             saldo = 0;
         } else {
             saldo -= valor;
         }
-
-        extrato[operacoes++] = -valor;
-
-        return true;
     }
 
     public boolean depositar(double valor) {
-        if (valor < 0)
-            return false;
+        if (valor > 0) {
+            if (limit < 100) {
+                final double novoLimit = limit + valor;
 
-        if (limit < 100) {
-            if (valor > 100 - limit) {
-                saldo += (valor - (100 - limit));
-                limit = 100;
+                if (novoLimit > 100) {
+                    saldo += novoLimit - 100;
+                    limit = 100;
+                } else {
+                    limit = novoLimit;
+                }
             } else {
-                limit += valor;
+                saldo += valor;
             }
-        } else {
-            saldo += valor;
+
+            extrato.add(operates++, valor);
+
+            return true;
         }
-
-        extrato[operacoes++] = valor;
-
-        return true;
+        return false;
     }
 
     public boolean transferir(Conta destino, double valor) {
-        if (valor < 0 || valor > getSaldo())
-            return false;
+        if (valor > 0 && valor <= getSaldo()) {
+            destino.depositar(valor);
 
-        destino.depositar(valor);
+            reajusteSaldo(valor);
 
-        if (valor > saldo) {
-            limit -= (valor - saldo);
-            saldo = 0;
-        } else {
-            saldo -= valor;
+            extrato.add(operates++, -valor);
+
+            return true;
         }
-
-        extrato[operacoes++] = -valor;
-
-        return true;
+        return false;
     }
 
     public double[] verExtrato() {
-        return extrato;
+        return extrato.stream().mapToDouble(Double::doubleValue).toArray();
     }
 
     @Override
