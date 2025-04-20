@@ -1,0 +1,180 @@
+name: Autograding Tests
+'on': 
+  - push
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Criar conta
+      id: criar-conta
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Criar conta
+        setup-command: ''
+        command: gradle test --tests 'TestConta.criarConta'
+        timeout: 10
+        max-score: 10
+
+    - name: Verificar saldo
+      id: verificar-saldo
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Verificar saldo
+        setup-command: ''
+        command: gradle test --tests 'TestConta.verificarSaldo'
+        timeout: 10
+        max-score: 10
+
+    - name: Saques negativos
+      id: saques-negativos
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Saques negativos
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarionNaoPodeRealizarSaquesNegativos'
+        timeout: 10
+        max-score: 10
+
+    - name: Saques excedendo saldo
+      id: saques-excedendo-saldo
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Saques excedendo saldo
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioNaoPoderSacarQuantiasMaioresQueOSaldo'
+        timeout: 10
+        max-score: 10
+
+    - name: Saques usando limite
+      id: saques-usando-limite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Saques usando limite
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioPodeSacarValoresUtilizandoOLimite'
+        timeout: 10
+        max-score: 15
+
+    - name: Saques sem usar limite
+      id: saques-sem-usar-limite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Saques sem usar limite
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioPodeSacarValoresSemUtilizarLimite'
+        timeout: 10
+        max-score: 10
+
+    - name: Depósitos negativos
+      id: depositos-negativos
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Depósitos negativos
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarionNaoDepositarValoresNegativos'
+        timeout: 10
+        max-score: 10
+
+    - name: Depósitos positivos
+      id: depositos-positivos
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Depósitos positivos
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioPodeDepositarValoresPositivos'
+        timeout: 10
+        max-score: 10
+
+    - name: Restaurar limite com depósito
+      id: restaurar-limite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Restaurar limite com depósito
+        setup-command: ''
+        command: gradle test --tests 'TestConta.depositosEmContasComLimiteUtilizadoDevemRestaurarOLimite'
+        timeout: 10
+        max-score: 15
+
+    - name: Transferências negativas
+      id: transferencias-negativas
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Transferências negativas
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioNaoPodeTransferirQuantiasNegativas'
+        timeout: 10
+        max-score: 10
+
+    - name: Transferências excedendo saldo
+      id: transferencias-excedendo-saldo
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Transferências excedendo saldo
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioNaoPodeTransferirQuantiasMaioresQueOSaldo'
+        timeout: 10
+        max-score: 10
+
+    - name: Transferências usando limite
+      id: transferencias-usando-limite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Transferências usando limite
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioPodeTransferirQuantiasUtilizandoLimite'
+        timeout: 10
+        max-score: 15
+
+    - name: Transferências sem usar limite
+      id: transferencias-sem-usar-limite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Transferências sem usar limite
+        setup-command: ''
+        command: gradle test --tests 'TestConta.usuarioPodeTransferirQuantiasSemUsarLimite'
+        timeout: 10
+        max-score: 10
+
+    - name: Verificar extrato
+      id: verificar-extrato
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Verificar extrato
+        setup-command: ''
+        command: gradle test --tests 'TestConta.verificaExtrato'
+        timeout: 10
+        max-score: 15
+
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        CRIAR-CONTA_RESULTS: "${{steps.criar-conta.outputs.result}}"
+        VERIFICAR-SALDO_RESULTS: "${{steps.verificar-saldo.outputs.result}}"
+        SAQUES-NEGATIVOS_RESULTS: "${{steps.saques-negativos.outputs.result}}"
+        SAQUES-EXCEDENDO-SALDO_RESULTS: "${{steps.saques-excedendo-saldo.outputs.result}}"
+        SAQUES-USANDO-LIMITE_RESULTS: "${{steps.saques-usando-limite.outputs.result}}"
+        SAQUES-SEM-USAR-LIMITE_RESULTS: "${{steps.saques-sem-usar-limite.outputs.result}}"
+        DEPOSITOS-NEGATIVOS_RESULTS: "${{steps.depositos-negativos.outputs.result}}"
+        DEPOSITOS-POSITIVOS_RESULTS: "${{steps.depositos-positivos.outputs.result}}"
+        RESTAURAR-LIMITE_RESULTS: "${{steps.restaurar-limite.outputs.result}}"
+        TRANSFERENCIAS-NEGATIVAS_RESULTS: "${{steps.transferencias-negativas.outputs.result}}"
+        TRANSFERENCIAS-EXCEDENDO-SALDO_RESULTS: "${{steps.transferencias-excedendo-saldo.outputs.result}}"
+        TRANSFERENCIAS-USANDO-LIMITE_RESULTS: "${{steps.transferencias-usando-limite.outputs.result}}"
+        TRANSFERENCIAS-SEM-USAR-LIMITE_RESULTS: "${{steps.transferencias-sem-usar-limite.outputs.result}}"
+        VERIFICAR-EXTRATO_RESULTS: "${{steps.verificar-extrato.outputs.result}}"
+      with:
+        runners: criar-conta,verificar-saldo,saques-negativos,saques-excedendo-saldo,
+                saques-usando-limite,saques-sem-usar-limite,depositos-negativos,
+                depositos-positivos,restaurar-limite,transferencias-negativas,
+                transferencias-excedendo-saldo,transferencias-usando-limite,
+                transferencias-sem-usar-limite,verificar-extrato
