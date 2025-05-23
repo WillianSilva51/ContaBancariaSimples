@@ -43,21 +43,24 @@
 
 ```mermaid
 classDiagram
+direction TB
     class Conta {
-        - int numero
-        - double saldo
-        - double limite
-        - List<Double> extrato
-        - int operacoesRealizadas
+	    - int numero
+	    - double saldo
+	    - double limite
+	    - List~Double~ extrato
+	    - int operacoesRealizadas
 
-        + Conta(int numero, double saldoInicial)
-        + double getSaldo()
-        + boolean sacar(double valor)
-        + boolean depositar(double valor)
-        + boolean transferir(Conta destino, double valor)
-        + double[] verExtrato()
-        + String toString()
+	    + Conta(int numero, double saldoInicial)
+	    + double getSaldo()
+	    + boolean sacar(double valor)
+	    + boolean depositar(double valor)
+	    + boolean transferir(Conta destino, double valor)
+	    + double[] verExtrato()
+	    + String toString()
     }
+
+
 ```
 
 ## Exemplo de execução
